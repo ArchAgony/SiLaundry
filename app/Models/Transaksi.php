@@ -12,4 +12,8 @@ class Transaksi extends Model
     use HasFactory, Notifiable;
 
     protected $guarded = ['id'];
+
+    public function layanan(){
+        return $this->belongsTo(Layanan::class, 'id_layanan');
+    }
 }

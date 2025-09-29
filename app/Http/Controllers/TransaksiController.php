@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Layanan;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class TransaksiController extends Controller
     public function index()
     {
         //
-        return view('transaksi.index');
+        $layanan = Layanan::all();
+        $transaksi = Transaksi::with('layanan')->get();
+        return view('transaksi.index', compact('transaksi', 'layanan'));
     }
 
     /**
@@ -30,6 +33,15 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         //
+        Transaksi::create([
+            'tanggal_transaksi' => $request->tanggal,
+            'id_layanan' => $request->layanan,
+            'berat' => $request->berat,
+            'nama_pelanggan' => $request->nama,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        return redirect('/transaksi');
     }
 
     /**
@@ -51,16 +63,28 @@ class TransaksiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Transaksi $transaksi)
+    public function update(Request $request, string $id)
     {
         //
+        $transaksi = Transaksi::find($id);
+
+        $transaksi->tanggal_transaksi = $request->tanggal;
+        $transaksi->id_layanan = $request->layanan;
+        $transaksi->berat = $request->berat;
+        $transaksi->nama_pelanggan = $request->nama;
+        $transaksi->keterangan = $request->keterangan;
+        $transaksi->save();
+
+        return redirect('/transaksi');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Transaksi $transaksi)
+    public function destroy(string $id)
     {
         //
+        Transaksi::where('id', $id)->delete();
+        return redirect('/transaksi');
     }
 }

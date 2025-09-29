@@ -13,7 +13,8 @@ class LayananController extends Controller
     public function index()
     {
         //
-        return view('layanan.index');
+        $layanan = Layanan::all();
+        return view('layanan.index', compact('layanan'));
     }
 
     /**
@@ -22,7 +23,7 @@ class LayananController extends Controller
     public function create()
     {
         //
-        return view('layanan.create');
+        // return view('layanan.create');
     }
 
     /**
@@ -31,6 +32,12 @@ class LayananController extends Controller
     public function store(Request $request)
     {
         //
+        Layanan::create([
+            'nama_layanan' => $request->nama,
+            'deskripsi' => $request->deskripsi,
+            'harga_satuan' => $request->harga,
+        ]);
+        return redirect('/layanan');
     }
 
     /**
@@ -49,22 +56,32 @@ class LayananController extends Controller
         )
     {
         //
-        return view('layanan.edit');
+        // return view('layanan.edit');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Layanan $layanan)
+    public function update(Request $request, string $id)
     {
         //
+        $layanan = Layanan::find($id);
+
+        $layanan->nama_layanan = $request->nama;
+        $layanan->deskripsi = $request->deskripsi;
+        $layanan->harga_satuan = $request->harga;
+        $layanan->save();
+
+        return redirect('/layanan');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Layanan $layanan)
+    public function destroy(string $id)
     {
         //
+        Layanan::where('id', $id)->delete();
+        return redirect('/layanan');
     }
 }
