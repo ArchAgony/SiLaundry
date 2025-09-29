@@ -1,12 +1,11 @@
 <?php
 
+use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('beranda');
-});
+Route::get('/', [BerandaController::class, 'index']);
 
 Route::get('/layanan', [LayananController::class, 'index']);
 Route::get('/layanan/{id}', [LayananController::class, 'destroy']);

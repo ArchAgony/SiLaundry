@@ -37,7 +37,7 @@ class LayananController extends Controller
             'deskripsi' => $request->deskripsi,
             'harga_satuan' => $request->harga,
         ]);
-        return redirect('/layanan');
+        return redirect('/layanan')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -72,7 +72,7 @@ class LayananController extends Controller
         $layanan->harga_satuan = $request->harga;
         $layanan->save();
 
-        return redirect('/layanan');
+        return redirect('/layanan')->with('success', 'Data berhasil diperbarui!');
     }
 
     /**
@@ -82,6 +82,6 @@ class LayananController extends Controller
     {
         //
         Layanan::where('id', $id)->delete();
-        return redirect('/layanan');
+        return redirect('/layanan')->with('success', 'Data berhasil dihapus!');
     }
 }

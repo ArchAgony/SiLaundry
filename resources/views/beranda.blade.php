@@ -15,10 +15,12 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Pelayanan</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ number_format($totalLayanan, 0, ',', '.') }}
+                            </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            <i class="fas fa-user fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -33,10 +35,12 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Transaksi</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ number_format($totalTransaksi, 0, ',', '.') }}
+                            </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            <i class="fas fa-clipboard fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -51,20 +55,12 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pendapatan hari ini
                             </div>
-                            <div class="row no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                Rp {{ number_format($pendapatanHariIni, 0, ',', '.') }}
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -79,7 +75,9 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Belum diambil</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ $belumDiambil }}
+                            </div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -89,7 +87,8 @@
             </div>
         </div>
     </div>
-    <div class="card">
+
+    <div class="card mb-4">
         <div class="card-header">
             Transaksi hari ini
         </div>
@@ -100,22 +99,57 @@
                         <th>No.</th>
                         <th>Tanggal transaksi</th>
                         <th>Layanan</th>
-                        <th>Banyak pelayanan</th>
+                        <th>Berat</th>
                         <th>Nama pelanggan</th>
                         <th>Keterangan</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1. </td>
-                        <td>22 Januari 1998</td>
-                        <td>Cuci</td>
-                        <td>1Kg</td>
-                        <td>Kimi Räikkönen</td>
-                        <td>Dikirim</td>
-                    </tr>
+                    @foreach ($transaksiHariIni as $key => $item)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $item->tanggal_transaksi }}</td>
+                            <td>{{ $item->layanan->nama_layanan ?? 'belum ada layanan' }}</td>
+                            <td>{{ $item->berat }} Kg</td>
+                            <td>{{ $item->nama_pelanggan }}</td>
+                            <td>{{ $item->keterangan }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Transaksi 7 Hari Terakhir</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="chartTransaksi"></canvas>
+        </div>
+    </div>
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const el = document.getElementById('chartTransaksi');
+            if (!el) return;
+
+            const labels = @json($labels);
+            const counts = @json($counts);
+
+            const ctx = el.getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah',
+                        data: counts
+                    }]
+                },
+                options: {}
+            });
+        });
+    </script>
+@endsection
 @endsection

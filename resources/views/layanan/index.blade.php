@@ -6,7 +6,7 @@
                 class="fas fa-arrow fa-sm text-white-50"></i>Tambah data</a> --}}
         <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal"
             data-target="#Tambah">
-            Tambah data
+            <i class="fas fa-fw fa-plus"></i> Tambah data
         </button>
     </div>
     <div class="card">
@@ -30,16 +30,18 @@
                             <td>{{ $key + 1 }}.</td>
                             <td>{{ $item->nama_layanan }}</td>
                             <td>{{ $item->deskripsi }}</td>
-                            <td>{{ $item->harga_satuan }}</td>
+                            <td>Rp. {{ number_format($item->harga_satuan, 0, ',', '.') }}</td>
                             <td>
                                 <div class="row">
                                     <div class="col-4">
-                                        <div class="btn btn-warning" data-toggle="modal" data-target="#Ubah{{ $item->id }}">ubah</div>
+                                        <div class="btn btn-warning" data-toggle="modal" data-target="#Ubah{{ $item->id }}"><i class="fas fa-fw fa-edit"></i> ubah</div>
                                     </div>
                                     <div class="col">
-                                        <a href="/layanan/{{ $item->id }}">
-                                            <div class="btn btn-danger">hapus</div>
-                                        </a>
+                                        <div class="btn btn-danger" onclick="confirmDelete({{ $item->id }})"><i
+                                                class="fas fa-fw fa-times"></i> hapus</div>
+                                        <form id="delete-form-{{ $item->id }}" action="/layanan/{{ $item->id }}"
+                                            method="GET" style="display:none;">
+                                        </form>
                                     </div>
                                 </div>
                             </td>
@@ -60,18 +62,18 @@
                                             @csrf
                                             <div class="form-group">
                                                 <label for="nama_layanan">Nama layanan</label>
-                                                <input type="text" name="nama" class="form-control" id="nama_layanan"
+                                                <input type="text" name="nama" class="form-control" id="nama_layanan" required
                                                     placeholder="Masukkan nama layanan" value="{{ $item->nama_layanan }}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="deskripsi_layanan">Deskripsi</label>
-                                                <textarea name="deskripsi" class="form-control" id="deskripsi_layanan" rows="3"
+                                                <textarea name="deskripsi" class="form-control" id="deskripsi_layanan" required rows="3"
                                                     placeholder="Masukkan deskripsi layanan">{{ $item->deskripsi }}</textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label for="harga_satuan">Harga satuan</label>
                                                 <div class="input-group mb-3">
-                                                    <input type="number" name="harga" class="form-control"
+                                                    <input type="number" name="harga" class="form-control" required
                                                         placeholder="Masukkan harga satuan" value="{{ $item->harga_satuan }}"
                                                         aria-label="Masukkan harga satuan" aria-describedby="basic-addon2">
                                                     <div class="input-group-append">
@@ -82,10 +84,10 @@
                                             <div class="row text-center">
                                                 <div class="col">
                                                     <button type="button" class="btn btn-danger"
-                                                        data-dismiss="modal">Batal</button>
+                                                        data-dismiss="modal"><i class="fas fa-fw fa-times"></i> Batal</button>
                                                 </div>
                                                 <div class="col">
-                                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                                    <button type="submit" class="btn btn-success"><i class="fas fa-fw fa-save"></i> Simpan</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -134,10 +136,10 @@
                         </div>
                         <div class="row text-center">
                             <div class="col">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-fw fa-times"></i> Batal</button>
                             </div>
                             <div class="col">
-                                <button type="submit" class="btn btn-success">Simpan</button>
+                                <button type="submit" class="btn btn-success"><i class="fas fa-fw fa-save"></i> Simpan</button>
                             </div>
                         </div>
                     </form>

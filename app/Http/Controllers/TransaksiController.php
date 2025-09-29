@@ -41,7 +41,7 @@ class TransaksiController extends Controller
             'keterangan' => $request->keterangan,
         ]);
 
-        return redirect('/transaksi');
+        return redirect('/transaksi')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -75,7 +75,7 @@ class TransaksiController extends Controller
         $transaksi->keterangan = $request->keterangan;
         $transaksi->save();
 
-        return redirect('/transaksi');
+        return redirect('/transaksi')->with('success', 'Data berhasil diperbarui!');;
     }
 
     /**
@@ -85,6 +85,6 @@ class TransaksiController extends Controller
     {
         //
         Transaksi::where('id', $id)->delete();
-        return redirect('/transaksi');
+        return redirect('/transaksi')->with('success', 'Data berhasil dihapus!');;
     }
 }
