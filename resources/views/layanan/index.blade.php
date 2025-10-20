@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col">
                 <div class="mb-3">
-                    <a href="{{ route('layanan.export') }}" class="btn btn-success">
+                    <a href="{{ route('layanan.export') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </a>
                 </div>
@@ -50,13 +50,13 @@
                             <td>Rp. {{ number_format($item->harga_satuan, 0, ',', '.') }}</td>
                             <td>
                                 <div class="row">
-                                    <div class="col-4">
-                                        <div class="btn btn-warning" data-toggle="modal"
+                                    <div class="col-5">
+                                        <div class="btn btn-warning btn-sm" data-toggle="modal"
                                             data-target="#Ubah{{ $item->id }}"><i class="fas fa-fw fa-edit"></i> ubah
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="btn btn-danger" onclick="confirmDelete({{ $item->id }})"><i
+                                        <div class="btn btn-danger btn-sm" onclick="confirmDelete({{ $item->id }})"><i
                                                 class="fas fa-fw fa-times"></i> hapus</div>
                                         <form id="delete-form-{{ $item->id }}" action="/layanan/{{ $item->id }}"
                                             method="GET" style="display:none;">

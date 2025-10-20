@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,8 @@ Route::post('/transaksi/create', [TransaksiController::class, 'store']);
 Route::post('/transaksi/edit/{id}', [TransaksiController::class, 'update']);
 Route::get('/transaksi/cetak/{id}', [TransaksiController::class, 'struk'])->name('transaksi.cetak');
 Route::get('/export/transaksi', [TransaksiController::class, 'exportTransaksi'])
-    ->name('transaksi.export');
+->name('transaksi.export');
 Route::post('/import/transaksi', [TransaksiController::class, 'importTransaksi'])
-    ->name('transaksi.import');
+->name('transaksi.import');
+
+Route::get('/laporan', [LaporanController::class, 'index']);

@@ -56,20 +56,20 @@
                             <td>{{ $item->keterangan }}</td>
                             <td>
                                 <div class="row">
-                                    <div class="col-4">
-                                        <div class="btn btn-warning" data-toggle="modal"
+                                    <div class="col">
+                                        <div class="btn btn-warning btn-sm" data-toggle="modal"
                                             data-target="#Ubah{{ $item->id }}"><i class="fas fa-fw fa-edit"></i> ubah
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="btn btn-danger" onclick="confirmDelete({{ $item->id }})"><i
+                                        <div class="btn btn-danger btn-sm" onclick="confirmDelete({{ $item->id }})"><i
                                                 class="fas fa-fw fa-times"></i> hapus</div>
                                         <form id="delete-form-{{ $item->id }}" action="/transaksi/{{ $item->id }}"
                                             method="GET" style="display:none;">
                                         </form>
                                     </div>
                                     <div class="col">
-                                        <a href="{{ route('transaksi.cetak', $item->id) }}" target="_blank" class="btn btn-info">
+                                        <a href="{{ route('transaksi.cetak', $item->id) }}" target="_blank" class="btn btn-info btn-sm">
                                             <i class="fas fa-print"></i> cetak
                                         </a>
                                     </div>

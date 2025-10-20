@@ -74,6 +74,12 @@
                     <span>Transaksi</span>
                 </a>
             </li>
+            <li class="ml-4 nav-item {{ request()->is('laporan*') ? 'active' : '' }}">
+                <a class="nav-link" href="/laporan">
+                    <i class="fas fa-folder"></i>
+                    <span>Laporan</span>
+                </a>
+            </li>
         </ul>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
