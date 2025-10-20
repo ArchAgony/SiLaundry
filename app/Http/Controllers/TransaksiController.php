@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransaksiExport;
+use App\Imports\TransaksiImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Layanan;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
@@ -11,6 +14,24 @@ class TransaksiController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function exportTransaksi()
+    {
+        $namaFile = 'transaksi_' . now()->format('Y-m-d') . '.xlsx';
+        return Excel::download(new TransaksiExport, $namaFile);
+    }
+
+    public function importTransaksi(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        Excel::import(new TransaksiImport, $request->file('file'));
+
+        return back()->with('success', 'Data transaksi berhasil diimpor!');
+    }
+
     public function index()
     {
         //
@@ -85,6 +106,12 @@ class TransaksiController extends Controller
     {
         //
         Transaksi::where('id', $id)->delete();
-        return redirect('/transaksi')->with('success', 'Data berhasil dihapus!');;
+        return redirect('/transaksi')->with('success', 'Data berhasil dihapus!');
+    }
+
+    public function struk(string $id) {
+        $transaksi = Transaksi::findOrFail($id);
+        $layanan = $transaksi->layanan;
+        return view('transaksi.struk', compact('transaksi', 'layanan'));
     }
 }

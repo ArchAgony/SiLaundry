@@ -19,21 +19,22 @@ class BerandaController extends Controller
             ->whereDate('created_at', Carbon::today())
             ->get();
 
-        $pendapatanHariIni = $transaksiHariIni->sum(function($t) {
-        return (float) (optional($t->layanan)->harga_satuan ?? 0);
+        $pendapatanHariIni = $transaksiHariIni
+        ->where('tanggal_transaksi', Carbon::today()->toDateString())
+        ->sum(function($t) {
+            $hargaSatuan = optional($t->layanan)->harga_satuan ?? 0;
+            return (float) $hargaSatuan * (float) ($t->berat ?? 0);
         });
 
         $belumDiambil = Transaksi::where('keterangan', 'belum diambil')->count();
 
-        // chart
-
         $data = Transaksi::select(
-                DB::raw('DATE(created_at) as tanggal'),
+                'tanggal_transaksi as tanggal',
                 DB::raw('COUNT(*) as total')
             )
-            ->where('created_at', '>=', Carbon::now()->subDays(6))
-            ->groupBy('tanggal')
-            ->orderBy('tanggal', 'ASC')
+            ->whereDate('tanggal_transaksi', '>=', Carbon::today()->subDays(6))
+            ->groupBy('tanggal_transaksi')
+            ->orderBy('tanggal_transaksi', 'ASC')
             ->get();
 
         $labels = $data->pluck('tanggal');

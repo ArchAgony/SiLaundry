@@ -4,10 +4,29 @@
         <h1 class="h3 mb-0 text-gray-800">Transaksi</h1>
         {{-- <a href="/layanan/create" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                 class="fas fa-arrow fa-sm text-white-50"></i>Tambah data</a> --}}
-        <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal"
-            data-target="#Tambah">
-            <i class="fas fa-fw fa-plus"></i> Tambah data
-        </button>
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <a href="{{ route('transaksi.export') }}"
+                        class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                    data-target="#Import">
+                    <i class="fas fa-upload"></i> Import Excel
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal"
+                    data-target="#Tambah">
+                    <i class="fas fa-fw fa-plus"></i> Tambah data
+                </button>
+            </div>
+        </div>
+
     </div>
     <div class="card">
         <div class="card-header">
@@ -38,8 +57,9 @@
                             <td>
                                 <div class="row">
                                     <div class="col-4">
-                                        <div class="btn btn-warning" data-toggle="modal" data-target="#Ubah{{ $item->id }}"><i
-                                                class="fas fa-fw fa-edit"></i> ubah</div>
+                                        <div class="btn btn-warning" data-toggle="modal"
+                                            data-target="#Ubah{{ $item->id }}"><i class="fas fa-fw fa-edit"></i> ubah
+                                        </div>
                                     </div>
                                     <div class="col">
                                         <div class="btn btn-danger" onclick="confirmDelete({{ $item->id }})"><i
@@ -47,6 +67,11 @@
                                         <form id="delete-form-{{ $item->id }}" action="/transaksi/{{ $item->id }}"
                                             method="GET" style="display:none;">
                                         </form>
+                                    </div>
+                                    <div class="col">
+                                        <a href="{{ route('transaksi.cetak', $item->id) }}" target="_blank" class="btn btn-info">
+                                            <i class="fas fa-print"></i> cetak
+                                        </a>
                                     </div>
                                 </div>
                             </td>
@@ -202,6 +227,31 @@
                                     Simpan</button>
                             </div>
                         </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="Import" tabindex="-1" aria-labelledby="TambahLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TambahLabel">Impor data excel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <form action="{{ route('transaksi.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <input type="file" name="file" class="form-control-file" required>
+                        </div>
+                        <button type="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-upload"></i> Import Excel
+                        </button>
                     </form>
                 </div>
             </div>

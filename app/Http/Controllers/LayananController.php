@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Exports\LayananExport;
+use App\Imports\LayananImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
 
@@ -10,6 +12,24 @@ class LayananController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function exportLayanan()
+    {
+        $namaFile = 'layanans_' . now()->format('Y-m-d') . '.xlsx';
+        return Excel::download(new LayananExport, $namaFile);
+    }
+
+    public function importLayanan(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        Excel::import(new LayananImport, $request->file('file'));
+
+        return back()->with('success', 'Data layanan berhasil diimpor!');
+    }
+
     public function index()
     {
         //

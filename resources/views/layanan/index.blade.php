@@ -4,10 +4,27 @@
         <h1 class="h3 mb-0 text-gray-800">Layanan</h1>
         {{-- <a href="/layanan/create" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                 class="fas fa-arrow fa-sm text-white-50"></i>Tambah data</a> --}}
-        <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal"
-            data-target="#Tambah">
-            <i class="fas fa-fw fa-plus"></i> Tambah data
-        </button>
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <a href="{{ route('layanan.export') }}" class="btn btn-success">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                    data-target="#Import">
+                    <i class="fas fa-upload"></i> Import Excel
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal"
+                    data-target="#Tambah">
+                    <i class="fas fa-fw fa-plus"></i> Tambah data
+                </button>
+            </div>
+        </div>
     </div>
     <div class="card">
         <div class="card-header">
@@ -34,7 +51,9 @@
                             <td>
                                 <div class="row">
                                     <div class="col-4">
-                                        <div class="btn btn-warning" data-toggle="modal" data-target="#Ubah{{ $item->id }}"><i class="fas fa-fw fa-edit"></i> ubah</div>
+                                        <div class="btn btn-warning" data-toggle="modal"
+                                            data-target="#Ubah{{ $item->id }}"><i class="fas fa-fw fa-edit"></i> ubah
+                                        </div>
                                     </div>
                                     <div class="col">
                                         <div class="btn btn-danger" onclick="confirmDelete({{ $item->id }})"><i
@@ -62,8 +81,9 @@
                                             @csrf
                                             <div class="form-group">
                                                 <label for="nama_layanan">Nama layanan</label>
-                                                <input type="text" name="nama" class="form-control" id="nama_layanan" required
-                                                    placeholder="Masukkan nama layanan" value="{{ $item->nama_layanan }}">
+                                                <input type="text" name="nama" class="form-control" id="nama_layanan"
+                                                    required placeholder="Masukkan nama layanan"
+                                                    value="{{ $item->nama_layanan }}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="deskripsi_layanan">Deskripsi</label>
@@ -74,7 +94,8 @@
                                                 <label for="harga_satuan">Harga satuan</label>
                                                 <div class="input-group mb-3">
                                                     <input type="number" name="harga" class="form-control" required
-                                                        placeholder="Masukkan harga satuan" value="{{ $item->harga_satuan }}"
+                                                        placeholder="Masukkan harga satuan"
+                                                        value="{{ $item->harga_satuan }}"
                                                         aria-label="Masukkan harga satuan" aria-describedby="basic-addon2">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="basic-addon2">Kg</span>
@@ -83,11 +104,12 @@
                                             </div>
                                             <div class="row text-center">
                                                 <div class="col">
-                                                    <button type="button" class="btn btn-danger"
-                                                        data-dismiss="modal"><i class="fas fa-fw fa-times"></i> Batal</button>
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                                            class="fas fa-fw fa-times"></i> Batal</button>
                                                 </div>
                                                 <div class="col">
-                                                    <button type="submit" class="btn btn-success"><i class="fas fa-fw fa-save"></i> Simpan</button>
+                                                    <button type="submit" class="btn btn-success"><i
+                                                            class="fas fa-fw fa-save"></i> Simpan</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -136,12 +158,39 @@
                         </div>
                         <div class="row text-center">
                             <div class="col">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-fw fa-times"></i> Batal</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                        class="fas fa-fw fa-times"></i> Batal</button>
                             </div>
                             <div class="col">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-fw fa-save"></i> Simpan</button>
+                                <button type="submit" class="btn btn-success"><i class="fas fa-fw fa-save"></i>
+                                    Simpan</button>
                             </div>
                         </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="Import" tabindex="-1" aria-labelledby="TambahLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TambahLabel">Impor data excel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <form action="{{ route('layanan.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <input type="file" name="file" class="form-control-file" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i> Import Excel
+                        </button>
                     </form>
                 </div>
             </div>
