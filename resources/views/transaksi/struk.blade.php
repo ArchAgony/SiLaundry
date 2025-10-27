@@ -8,6 +8,7 @@
             font-size: 13px;
             width: 80mm;
             margin: 0 auto;
+            padding: 10px;
         }
 
         .center {
@@ -16,98 +17,146 @@
 
         .header {
             border-bottom: 1px dashed #000;
-            padding-bottom: 5px;
-            margin-bottom: 5px;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .info {
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .info p {
+            margin: 2px 0;
         }
 
         .footer {
             border-top: 1px dashed #000;
             margin-top: 10px;
-            padding-top: 5px;
+            padding-top: 8px;
             text-align: center;
+            font-size: 11px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: 10px 0;
         }
 
         td, th {
-            padding: 3px 0;
+            padding: 4px 2px;
             vertical-align: top;
+            font-size: 12px;
+        }
+
+        thead {
+            border-bottom: 1px solid #000;
         }
 
         .left { text-align: left; }
         .right { text-align: right; }
-        .center { text-align: center; }
 
-        /* Lebar kolom disesuaikan supaya rapi */
-        .col-item { width: 35%; }
-        .col-harga { width: 20%; }
-        .col-berat { width: 15%; }
-        .col-subtotal { width: 30%; }
-
-        .total {
+        .total-row {
             border-top: 1px dashed #000;
             font-weight: bold;
-            padding-top: 4px;
+            font-size: 13px;
+        }
+
+        .item-name {
+            width: 40%;
+        }
+
+        .item-price {
+            width: 20%;
+        }
+
+        .item-qty {
+            width: 15%;
+        }
+
+        .item-subtotal {
+            width: 25%;
         }
 
         @media print {
             .no-print {
                 display: none;
             }
+            
+            body {
+                padding: 0;
+            }
         }
     </style>
 </head>
 <body>
+    @php
+        $firstItem = $transaksiList->first();
+        $totalBayar = 0;
+    @endphp
+
     <div class="header center">
-        <strong>SI LAUNDRY</strong><br>
-        Jl. Contoh No.123<br>
-        Telp: 0812-3456-7890
+        <h3 style="margin: 5px 0;">SI LAUNDRY</h3>
+        <div style="font-size: 11px;">
+            Jl. Contoh No.123<br>
+            Telp: 0812-3456-7890
+        </div>
     </div>
 
-    <div>
-        <p>
-            <b>No. Transaksi:</b> {{ $transaksi->id }}<br>
-            <b>Tanggal:</b> {{ $transaksi->tanggal_transaksi }}<br>
-            <b>Pelanggan:</b> {{ $transaksi->nama_pelanggan }}
-        </p>
+    <div class="info">
+        <p><strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($firstItem->tanggal_transaksi)->format('d/m/Y') }}</p>
+        <p><strong>Pelanggan:</strong> {{ $firstItem->nama_pelanggan }}</p>
+        <p><strong>Waktu:</strong> {{ $firstItem->created_at->format('H:i') }}</p>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th class="left col-item">Item</th>
-                <th class="right col-harga">Harga</th>
-                <th class="right col-berat">Kg</th>
-                <th class="right col-subtotal">Subtotal</th>
+                <th class="left item-name">Item</th>
+                <th class="right item-price">Harga</th>
+                <th class="right item-qty">Kg</th>
+                <th class="right item-subtotal">Subtotal</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="left col-item">{{ $layanan->nama_layanan ?? '-' }}</td>
-                <td class="right col-harga">Rp {{ number_format($layanan->harga_satuan, 0, ',', '.') }}</td>
-                <td class="right col-berat">{{ $transaksi->berat }}</td>
-                <td class="right col-subtotal">Rp {{ number_format($layanan->harga_satuan * $transaksi->berat, 0, ',', '.') }}</td>
-            </tr>
+            @foreach($transaksiList as $item)
+                @php
+                    $harga = $item->layanan->harga_satuan ?? 0;
+                    $subtotal = $harga * $item->berat;
+                    $totalBayar += $subtotal;
+                @endphp
+                <tr>
+                    <td class="left item-name">{{ $item->layanan->nama_layanan ?? '-' }}</td>
+                    <td class="right item-price">{{ number_format($harga, 0, ',', '.') }}</td>
+                    <td class="right item-qty">{{ $item->berat }}</td>
+                    <td class="right item-subtotal">{{ number_format($subtotal, 0, ',', '.') }}</td>
+                </tr>
+            @endforeach
         </tbody>
-        <tfoot>
-            <tr class="total">
-                <td colspan="3" class="right"><b>Total Bayar</b></td>
-                <td class="right"><b>Rp {{ number_format($layanan->harga_satuan * $transaksi->berat, 0, ',', '.') }}</b></td>
-            </tr>
-        </tfoot>
+    </table>
+
+    <table>
+        <tr class="total-row">
+            <td class="left">TOTAL BAYAR</td>
+            <td class="right">Rp {{ number_format($totalBayar, 0, ',', '.') }}</td>
+        </tr>
     </table>
 
     <div class="footer">
-        <p>Terima kasih telah menggunakan layanan kami!</p>
-        <p>~ Cucian Bersih, Hati Pun Senang ~</p> <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <button class="no-print" onclick="window.print()">🖨️ Cetak</button>
+        <p style="margin: 5px 0;">Terima kasih telah menggunakan layanan kami!</p>
+        <p style="margin: 5px 0; font-style: italic;">~ Cucian Bersih, Hati Pun Senang ~</p>
     </div>
+
+    <div class="center" style="margin-top: 20px;">
+        <button class="no-print" onclick="window.print()" style="padding: 8px 20px; cursor: pointer;">
+            🖨️ Cetak Struk
+        </button>
+    </div>
+
+    <script>
+        // Auto print saat halaman dibuka (opsional)
+        // window.onload = function() { window.print(); }
+    </script>
 </body>
 </html>

@@ -53,17 +53,16 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        $layananArray = $request->layanan; 
-        $beratArray = $request->berat;    
-        $keteranganArray = $request->keterangan;
+        $layananArray = $request->layanan;
+        $beratArray = $request->berat;
 
         foreach ($layananArray as $index => $layananId) {
             Transaksi::create([
                 'tanggal_transaksi' => $request->tanggal,
-                'id_layanan' => $layananId,           
-                'berat' => $beratArray[$index],       
+                'id_layanan' => $layananId,
+                'berat' => $beratArray[$index],
                 'nama_pelanggan' => $request->nama,
-                'keterangan' => $keteranganArray[$index],
+                'keterangan' => 'proses',
             ]);
         }
 
@@ -117,7 +116,19 @@ class TransaksiController extends Controller
     public function struk(string $id)
     {
         $transaksi = Transaksi::findOrFail($id);
-        $layanan = $transaksi->layanan;
-        return view('transaksi.struk', compact('transaksi', 'layanan'));
+
+        $createdAt = $transaksi->created_at;
+
+        $transaksiList = Transaksi::where('nama_pelanggan', $transaksi->nama_pelanggan)
+            ->whereDate('tanggal_transaksi', $transaksi->tanggal_transaksi)
+            ->whereBetween('created_at', [
+                $createdAt->copy()->subMinutes(2),
+                $createdAt->copy()->addMinutes(2)
+            ])
+            ->with('layanan')
+            ->orderBy('id')
+            ->get();
+
+        return view('transaksi.struk', compact('transaksiList'));
     }
 }
