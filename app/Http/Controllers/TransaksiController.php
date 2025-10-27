@@ -53,14 +53,19 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        Transaksi::create([
-            'tanggal_transaksi' => $request->tanggal,
-            'id_layanan' => $request->layanan,
-            'berat' => $request->berat,
-            'nama_pelanggan' => $request->nama,
-            'keterangan' => $request->keterangan,
-        ]);
+        $layananArray = $request->layanan; 
+        $beratArray = $request->berat;    
+        $keteranganArray = $request->keterangan;
+
+        foreach ($layananArray as $index => $layananId) {
+            Transaksi::create([
+                'tanggal_transaksi' => $request->tanggal,
+                'id_layanan' => $layananId,           
+                'berat' => $beratArray[$index],       
+                'nama_pelanggan' => $request->nama,
+                'keterangan' => $keteranganArray[$index],
+            ]);
+        }
 
         return redirect('/transaksi')->with('success', 'Data berhasil ditambahkan!');
     }
@@ -109,7 +114,8 @@ class TransaksiController extends Controller
         return redirect('/transaksi')->with('success', 'Data berhasil dihapus!');
     }
 
-    public function struk(string $id) {
+    public function struk(string $id)
+    {
         $transaksi = Transaksi::findOrFail($id);
         $layanan = $transaksi->layanan;
         return view('transaksi.struk', compact('transaksi', 'layanan'));

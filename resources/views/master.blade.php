@@ -91,6 +91,9 @@
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                     </div> --}}
                     @yield('isi')
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+                    @stack('scripts')
                 </div>
             </div>
             <footer class="sticky-footer bg-white">

@@ -69,7 +69,8 @@
                                         </form>
                                     </div>
                                     <div class="col">
-                                        <a href="{{ route('transaksi.cetak', $item->id) }}" target="_blank" class="btn btn-info btn-sm">
+                                        <a href="{{ route('transaksi.cetak', $item->id) }}" target="_blank"
+                                            class="btn btn-info btn-sm">
                                             <i class="fas fa-print"></i> cetak
                                         </a>
                                     </div>
@@ -167,64 +168,91 @@
     </div>
 
     <div class="modal fade" id="Tambah" tabindex="-1" aria-labelledby="TambahLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="TambahLabel">Tambah layanan</h5>
+                    <h5 class="modal-title" id="TambahLabel">Tambah Transaksi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
                 <div class="modal-body">
-                    <form action="/transaksi/create" method="post">
+                    <form action="/transaksi/create" method="post" id="formTransaksi">
                         @csrf
                         <div class="form-group">
-                            <label for="nama_layanan">Tanggal transaksi</label>
-                            <input type="date" name="tanggal" class="form-control" id="nama_layanan"
-                                placeholder="Masukkan tanggal transaksi">
+                            <label for="tanggal">Tanggal Transaksi</label>
+                            <input type="date" name="tanggal" class="form-control" required>
                         </div>
+
                         <div class="form-group">
-                            <label for="deskripsi_layanan">Layanan</label>
-                            <select class="form-control" name="layanan" id="exampleFormControlSelect1">
-                                <option selected value="">Pilih layanan...</option>
-                                @foreach ($layanan as $item)
-                                    <option value="{{ $item->id }}">{{ $item->nama_layanan }}</option>
-                                @endforeach
-                            </select>
+                            <label for="nama_pelanggan">Nama Pelanggan</label>
+                            <input type="text" name="nama" class="form-control"
+                                placeholder="Masukkan nama pelanggan" required>
                         </div>
-                        <div class="form-group">
-                            <label for="harga_satuan">Berat</label>
-                            <div class="input-group mb-3">
-                                <input type="number" name="berat" class="form-control" placeholder="Masukkan berat"
-                                    aria-label="Masukkan harga satuan" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">Kg</span>
+
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">Detail Layanan</h6>
+                            <button type="button" class="btn btn-sm btn-primary" id="tambahLayanan">
+                                <i class="fas fa-plus"></i> Tambah Layanan
+                            </button>
+                        </div>
+
+                        <!-- Container untuk layanan -->
+                        <div id="containerLayanan">
+                            <div class="layanan-item border rounded p-3 mb-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Layanan <span class="text-danger">*</span></label>
+                                            <select class="form-control" name="layanan[]" required>
+                                                <option value="">Pilih layanan...</option>
+                                                @foreach ($layanan as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->nama_layanan }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Berat (Kg) <span class="text-danger">*</span></label>
+                                            <input type="number" name="berat[]" class="form-control" placeholder="0"
+                                                step="0.1" min="0.1" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Keterangan <span class="text-danger">*</span></label>
+                                            <select class="form-control" name="keterangan[]" required>
+                                                <option value="">Pilih keterangan...</option>
+                                                <option value="belum diambil">Belum diambil</option>
+                                                <option value="proses">Proses</option>
+                                                <option value="sudah dikerjakan">Sudah dikerjakan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 d-flex align-items-center">
+                                        <button type="button" class="btn btn-danger btn-sm mt-3 hapus-layanan"
+                                            style="display:none;">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="nama_layanan">Nama pelanggan</label>
-                            <input type="text" name="nama" class="form-control" id="nama_layanan"
-                                placeholder="Masukkan nama pelanggan">
-                        </div>
-                        <div class="form-group">
-                            <label for="deskripsi_layanan">Keterangan</label>
-                            <select class="form-control" name="keterangan" id="exampleFormControlSelect1">
-                                <option selected value="">Pilih keterangan...</option>
-                                <option value="belum diambil">Belum diambil</option>
-                                <option value="proses">Proses</option>
-                                <option value="sudah dikerjakan">Sudah dikerjakan</option>
-                            </select>
-                        </div>
-                        <div class="row text-center">
+
+                        <div class="row text-center mt-4">
                             <div class="col">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i
-                                        class="fas fa-fw fa-times"></i> Batal</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                    <i class="fas fa-times"></i> Batal
+                                </button>
                             </div>
                             <div class="col">
-                                <button type="submit" class="btn btn-success"><i class="fas fa-fw fa-save"></i>
-                                    Simpan</button>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save"></i> Simpan
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -258,3 +286,95 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let layananCount = 1;
+
+            // Tambah layanan baru
+            document.getElementById('tambahLayanan')?.addEventListener('click', function() {
+                layananCount++;
+
+                const newLayanan = document.createElement('div');
+                newLayanan.className = 'layanan-item border rounded p-3 mb-3';
+                newLayanan.innerHTML = `
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Layanan <span class="text-danger">*</span></label>
+                        <select class="form-control" name="layanan[]" required>
+                            <option value="">Pilih layanan...</option>
+                            @foreach ($layanan as $item)
+                                <option value="{{ $item->id }}">{{ $item->nama_layanan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Berat (Kg) <span class="text-danger">*</span></label>
+                        <input type="number" name="berat[]" class="form-control" 
+                               placeholder="0" step="0.1" min="0.1" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Keterangan <span class="text-danger">*</span></label>
+                        <select class="form-control" name="keterangan[]" required>
+                            <option value="">Pilih keterangan...</option>
+                            <option value="belum diambil">Belum diambil</option>
+                            <option value="proses">Proses</option>
+                            <option value="sudah dikerjakan">Sudah dikerjakan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                    <button type="button" class="btn btn-danger btn-sm mt-3 hapus-layanan">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+
+                document.getElementById('containerLayanan').appendChild(newLayanan);
+                updateHapusButton();
+            });
+
+            // Hapus layanan (Event delegation)
+            document.getElementById('containerLayanan')?.addEventListener('click', function(e) {
+                if (e.target.closest('.hapus-layanan')) {
+                    e.target.closest('.layanan-item').remove();
+                    layananCount--;
+                    updateHapusButton();
+                }
+            });
+
+            // Update visibility tombol hapus
+            function updateHapusButton() {
+                const items = document.querySelectorAll('.layanan-item').length;
+                const hapusButtons = document.querySelectorAll('.hapus-layanan');
+
+                hapusButtons.forEach(btn => {
+                    btn.style.display = items > 1 ? 'block' : 'none';
+                });
+            }
+
+            // Reset form ketika modal ditutup
+            const modalElement = document.getElementById('Tambah');
+            if (modalElement && typeof $ !== 'undefined') {
+                $(modalElement).on('hidden.bs.modal', function() {
+                    document.getElementById('formTransaksi')?.reset();
+                    const items = document.querySelectorAll('.layanan-item');
+                    items.forEach((item, index) => {
+                        if (index > 0) item.remove();
+                    });
+                    layananCount = 1;
+                    updateHapusButton();
+                });
+            }
+
+            // Initial check
+            updateHapusButton();
+        });
+    </script>
+@endpush

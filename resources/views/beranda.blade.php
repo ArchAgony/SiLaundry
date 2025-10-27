@@ -90,7 +90,7 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            Transaksi hari ini
+            Transaksi terbaru
         </div>
         <div class="card-body">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
