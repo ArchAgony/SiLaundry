@@ -7,7 +7,7 @@
         <div class="card-header">
             Laporan yang tersedia
         </div>
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>

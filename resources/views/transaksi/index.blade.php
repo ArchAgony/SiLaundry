@@ -5,24 +5,23 @@
         {{-- <a href="/layanan/create" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                 class="fas fa-arrow fa-sm text-white-50"></i>Tambah data</a> --}}
         <div class="row">
-            <div class="col">
+            <div class="col-auto">
                 <div class="mb-3">
-                    <a href="{{ route('transaksi.export') }}"
-                        class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                    <a href="{{ route('transaksi.export') }}" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </a>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-auto">
                 <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
                     data-target="#Import">
                     <i class="fas fa-upload"></i> Import Excel
                 </button>
             </div>
-            <div class="col">
+            <div class="col-auto">
                 <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal"
                     data-target="#Tambah">
-                    <i class="fas fa-fw fa-plus"></i> Tambah data
+                    <i class="fas fa-fw fa-plus"></i> Tambah
                 </button>
             </div>
         </div>
@@ -32,7 +31,7 @@
         <div class="card-header">
             Total layanan yang ada
         </div>
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -181,11 +180,6 @@
                     <form action="/transaksi/create" method="post" id="formTransaksi">
                         @csrf
                         <div class="form-group">
-                            <label for="tanggal">Tanggal Transaksi</label>
-                            <input type="date" name="tanggal" class="form-control" required>
-                        </div>
-
-                        <div class="form-group">
                             <label for="nama_pelanggan">Nama Pelanggan</label>
                             <input type="text" name="nama" class="form-control"
                                 placeholder="Masukkan nama pelanggan" required>
@@ -273,18 +267,17 @@
             </div>
         </div>
     </div>
-    
 @endsection
 @push('scripts')
-<script>
-$(document).ready(function() {
-    let layananCount = 1;
+    <script>
+        $(document).ready(function() {
+            let layananCount = 1;
 
-    // Tambah layanan baru
-    $('#tambahLayanan').click(function() {
-        layananCount++;
-        
-        const newLayanan = `
+            // Tambah layanan baru
+            $('#tambahLayanan').click(function() {
+                layananCount++;
+
+                const newLayanan = `
             <div class="layanan-item border rounded p-3 mb-3">
                 <div class="row">
                     <div class="col-md-6">
@@ -313,35 +306,35 @@ $(document).ready(function() {
                 </div>
             </div>
         `;
-        
-        $('#containerLayanan').append(newLayanan);
-        updateHapusButton();
-    });
 
-    // Hapus layanan
-    $(document).on('click', '.hapus-layanan', function() {
-        $(this).closest('.layanan-item').remove();
-        layananCount--;
-        updateHapusButton();
-    });
+                $('#containerLayanan').append(newLayanan);
+                updateHapusButton();
+            });
 
-    // Update visibility tombol hapus
-    function updateHapusButton() {
-        const items = $('.layanan-item').length;
-        if (items > 1) {
-            $('.hapus-layanan').show();
-        } else {
-            $('.hapus-layanan').hide();
-        }
-    }
+            // Hapus layanan
+            $(document).on('click', '.hapus-layanan', function() {
+                $(this).closest('.layanan-item').remove();
+                layananCount--;
+                updateHapusButton();
+            });
 
-    // Reset form ketika modal ditutup
-    $('#Tambah').on('hidden.bs.modal', function () {
-        $('#formTransaksi')[0].reset();
-        $('.layanan-item:not(:first)').remove();
-        layananCount = 1;
-        updateHapusButton();
-    });
-});
-</script>
+            // Update visibility tombol hapus
+            function updateHapusButton() {
+                const items = $('.layanan-item').length;
+                if (items > 1) {
+                    $('.hapus-layanan').show();
+                } else {
+                    $('.hapus-layanan').hide();
+                }
+            }
+
+            // Reset form ketika modal ditutup
+            $('#Tambah').on('hidden.bs.modal', function() {
+                $('#formTransaksi')[0].reset();
+                $('.layanan-item:not(:first)').remove();
+                layananCount = 1;
+                updateHapusButton();
+            });
+        });
+    </script>
 @endpush

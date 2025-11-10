@@ -7,6 +7,7 @@ use App\Imports\TransaksiImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Layanan;
 use App\Models\Transaksi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
@@ -36,7 +37,7 @@ class TransaksiController extends Controller
     {
         //
         $layanan = Layanan::all();
-        $transaksi = Transaksi::with('layanan')->get();
+        $transaksi = Transaksi::with('layanan')->orderBy('tanggal_transaksi', 'desc')->get();
         return view('transaksi.index', compact('transaksi', 'layanan'));
     }
 
@@ -58,7 +59,7 @@ class TransaksiController extends Controller
 
         foreach ($layananArray as $index => $layananId) {
             Transaksi::create([
-                'tanggal_transaksi' => $request->tanggal,
+                'tanggal_transaksi' => Carbon::now(),
                 'id_layanan' => $layananId,
                 'berat' => $beratArray[$index],
                 'nama_pelanggan' => $request->nama,

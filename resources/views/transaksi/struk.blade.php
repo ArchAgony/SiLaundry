@@ -88,6 +88,8 @@
                 padding: 0;
             }
         }
+
+        
     </style>
 </head>
 <body>
@@ -97,10 +99,10 @@
     @endphp
 
     <div class="header center">
-        <h3 style="margin: 5px 0;">SI LAUNDRY</h3>
+        <h3 style="margin: 5px 0;">SILAUNDRY v.1</h3>
         <div style="font-size: 11px;">
-            Jl. Contoh No.123<br>
-            Telp: 0812-3456-7890
+            Jl. Panglima Sudirman<br>
+            Telp: 0858-5470-7566
         </div>
     </div>
 
@@ -155,8 +157,7 @@
     </div>
 
     <script>
-        // Auto print saat halaman dibuka (opsional)
-        // window.onload = function() { window.print(); }
+        window.onload = function() { window.print(); }
     </script>
 </body>
 </html>

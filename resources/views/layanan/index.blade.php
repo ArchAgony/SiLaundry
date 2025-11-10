@@ -5,23 +5,21 @@
         {{-- <a href="/layanan/create" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                 class="fas fa-arrow fa-sm text-white-50"></i>Tambah data</a> --}}
         <div class="row">
-            <div class="col">
-                <div class="mb-3">
-                    <a href="{{ route('layanan.export') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
-                        <i class="fas fa-file-excel"></i> Export Excel
-                    </a>
-                </div>
+            <div class="col-auto">
+                <a href="{{ route('layanan.export') }}" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                    <i class="fas fa-file-excel"></i> Export Excel
+                </a>
             </div>
-            <div class="col">
+            <div class="col-auto">
                 <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
                     data-target="#Import">
                     <i class="fas fa-upload"></i> Import Excel
                 </button>
             </div>
-            <div class="col">
+            <div class="col-auto">
                 <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal"
                     data-target="#Tambah">
-                    <i class="fas fa-fw fa-plus"></i> Tambah data
+                    <i class="fas fa-fw fa-plus"></i> Tambah
                 </button>
             </div>
         </div>
@@ -30,7 +28,7 @@
         <div class="card-header">
             Total layanan yang ada
         </div>
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -50,12 +48,12 @@
                             <td>Rp. {{ number_format($item->harga_satuan, 0, ',', '.') }}</td>
                             <td>
                                 <div class="row">
-                                    <div class="col-5">
+                                    <div class="col-auto">
                                         <div class="btn btn-warning btn-sm" data-toggle="modal"
                                             data-target="#Ubah{{ $item->id }}"><i class="fas fa-fw fa-edit"></i> ubah
                                         </div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-auto">
                                         <div class="btn btn-danger btn-sm" onclick="confirmDelete({{ $item->id }})"><i
                                                 class="fas fa-fw fa-times"></i> hapus</div>
                                         <form id="delete-form-{{ $item->id }}" action="/layanan/{{ $item->id }}"
@@ -137,20 +135,20 @@
                         @csrf
                         <div class="form-group">
                             <label for="nama_layanan">Nama layanan</label>
-                            <input type="text" name="nama" class="form-control" id="nama_layanan"
+                            <input type="text" name="nama" class="form-control" id="nama_layanan" required
                                 placeholder="Masukkan nama layanan">
                         </div>
                         <div class="form-group">
                             <label for="deskripsi_layanan">Deskripsi</label>
                             <textarea name="deskripsi" class="form-control" id="deskripsi_layanan" rows="3"
-                                placeholder="Masukkan deskripsi layanan"></textarea>
+                                placeholder="Masukkan deskripsi layanan" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="harga_satuan">Harga satuan</label>
                             <div class="input-group mb-3">
                                 <input type="number" name="harga" class="form-control"
                                     placeholder="Masukkan harga satuan" aria-label="Masukkan harga satuan"
-                                    aria-describedby="basic-addon2">
+                                    aria-describedby="basic-addon2" required>
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">Kg</span>
                                 </div>
